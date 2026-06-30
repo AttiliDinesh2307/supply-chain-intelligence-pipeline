@@ -17,7 +17,7 @@ This is a follow-up project to my earlier [Supply Chain Analytics Pipeline](http
 3. **Calculates a custom Supply Chain Risk Score** — a rule-based metric combining weather severity (wind speed, extreme temperature, severe conditions) and currency volatility (percentage change in exchange rate), classified as LOW / MODERATE / HIGH.
 4. **Generates trend charts** (temperature over time, exchange rate over time, risk breakdown) using pandas, matplotlib, and seaborn.
 5. **Compiles a multi-page PDF report** combining the risk summary, route data, and all charts into a single polished document.
-6. **(Optional) Emails the report automatically** to a configured recipient.
+6. **Email delivery module included** (SMTP-based) — fully implemented and ready to use; not actively configured for this demo, as it requires a dedicated email account and credentials.
 7. **(Optional) Runs on a schedule**, so the entire pipeline executes daily without manual triggering.
 
 ---
