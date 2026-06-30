@@ -2,9 +2,12 @@ import requests
 import os
 from dotenv import load_dotenv
 from db_handler import create_tables, insert_weather, insert_exchange_rate, insert_country_data
+from logger_config import get_logger
 
 # Load environment variables from .env file
 load_dotenv()
+
+logger = get_logger(__name__)
 
 
 def fetch_weather(city="Mumbai"):
@@ -34,10 +37,11 @@ def fetch_weather(city="Mumbai"):
             "weather_condition": data["weather"][0]["description"],
             "wind_speed": data["wind"]["speed"]
         }
+        logger.info(f"Weather data fetched successfully for {city}")
         return weather_info
     
     except requests.exceptions.RequestException as e:
-        print(f"Error fetching weather data: {e}")
+        logger.error(f"Error fetching weather data: {e}")
         return None
 
 
@@ -64,10 +68,11 @@ def fetch_exchange_rate(base_currency="USD"):
                 "JPY": data["conversion_rates"].get("JPY")
             }
         }
+        logger.info(f"Exchange rate data fetched successfully for base {base_currency}")
         return exchange_info
     
     except requests.exceptions.RequestException as e:
-        print(f"Error fetching exchange rate data: {e}")
+        logger.error(f"Error fetching exchange rate data: {e}")
         return None
 
 
@@ -94,10 +99,11 @@ def fetch_country_data(country_name="India"):
             "capital": data.get("capitals", [{}])[0].get("name", "N/A"),
             "currencies": [c["code"] for c in data.get("currencies", [])]
         }
+        logger.info(f"Country data fetched successfully for {country_name}")
         return country_info
     
     except requests.exceptions.RequestException as e:
-        print(f"Error fetching country data: {e}")
+        logger.error(f"Error fetching country data: {e}")
         return None
 
 
@@ -118,10 +124,11 @@ def fetch_fuel_prices(state="Karnataka", district="Bengaluru"):
             "district": data.get("district", district),
             "products": data.get("products", [])
         }
+        logger.info(f"Fuel price data fetched successfully for {district}, {state}")
         return fuel_info
     
     except requests.exceptions.RequestException as e:
-        print(f"Error fetching fuel price data (non-critical, continuing): {e}")
+        logger.warning(f"Error fetching fuel price data (non-critical, continuing): {e}")
         return None
 
 
@@ -149,14 +156,16 @@ def fetch_route_distance(origin_coords, destination_coords, origin_name="Origin"
             "distance_km": round(route["distance"] / 1000, 2),
             "duration_minutes": round(route["duration"] / 60, 1)
         }
+        logger.info(f"Route data fetched successfully: {origin_name} -> {destination_name}")
         return route_info
     
     except requests.exceptions.RequestException as e:
-        print(f"Error fetching route data: {e}")
+        logger.error(f"Error fetching route data: {e}")
         return None
 
 
 if __name__ == "__main__":
+    logger.info("=== Pipeline run started ===")
     create_tables()
 
     weather_result = fetch_weather("Bengaluru")
@@ -181,3 +190,5 @@ if __name__ == "__main__":
         destination_name="Chennai"
     )
     print("Route Data:", route_result)
+
+    logger.info("=== Pipeline run completed ===")
