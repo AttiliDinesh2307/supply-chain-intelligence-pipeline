@@ -126,4 +126,4 @@ The pipeline generates a dated PDF report (`reports/SCM_Report_YYYY-MM-DD.pdf`) 
 
 **Dinesh Attili**
 MBA, Business Analytics & Operations
-[LinkedIn](https://linkedin.com) · [GitHub](https://github.com/AttiliDinesh2307)
+[GitHub](https://github.com/AttiliDinesh2307)
